@@ -12,8 +12,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
   
   NotesBloc() : super(NotesState()) {
 
-    on<AddNoteFrave>(_addNewNote);
-    on<SelectedColorEvent>(_selectedColor);
+    on<AddNoteEvent>(_addNewNote);
     on<SelectedCategoryEvent>(_selectedCategory);
     on<ChangedListToGrid>(_changedListToGrid);
     on<UpdateNoteEvent>(_updateNote);
@@ -22,34 +21,32 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
 
   }
 
-  Future<void> _addNewNote(AddNoteFrave event, Emitter<NotesState> emit) async {
+  Future<void> _addNewNote(AddNoteEvent event, Emitter<NotesState> emit) async {
 
     var box = Hive.box<NoteModels>('keepNote');
 
     var noteModel = NoteModels(
       title : event.title,
       body : event.body,
-      color: state.color,
-      isComplete: event.isComplete,
       category: event.category,
       created : DateTime.now()
     );
 
-    box.add(noteModel); 
+    box.add(noteModel);
 
   }
 
 
-  Future<void> _selectedColor(SelectedColorEvent event, Emitter<NotesState> emit) async {
-
-    emit(state.copyWith(color: event.color));
-
-  }
+  // Future<void> _selectedColor(SelectedColorEvent event, Emitter<NotesState> emit) async {
+  //
+  //   emit(state.copyWith(color: event.color));
+  //
+  // }
 
 
   Future<void> _selectedCategory(SelectedCategoryEvent event, Emitter<NotesState> emit) async {
 
-    emit(state.copyWith(category: event.category, colorCategory: event.colorCategory));
+    emit(state.copyWith(category: event.category, colorCategory: event.categoryColor));
 
   }
 
@@ -68,8 +65,6 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     var noteModel = NoteModels(
       title : event.title,
       body : event.body,
-      color: state.color,
-      isComplete: event.isComplete,
       category: event.category,
       created : DateTime.now()
     );
@@ -89,7 +84,6 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
 
 
   Future<void> _lengthAllNotes(LengthAllNotesEvent event, Emitter<NotesState> emit) async {
-
     emit(state.copyWith(noteLength: event.length));
 
   }

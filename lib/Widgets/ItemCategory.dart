@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keep_notes/Bloc/Notes/notes_bloc.dart';
 
-import 'TextFrave.dart';
+import 'text_plus.dart';
 
 class ItemCategory extends StatelessWidget {
   
@@ -19,24 +19,10 @@ class ItemCategory extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        margin: EdgeInsets.only(bottom: 15.0),
+        margin: EdgeInsets.only(bottom: 0.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Container(
-                  height: 18,
-                  width: 18,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: color, width: 4.0),
-                    borderRadius: BorderRadius.circular(7.0)
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                TextFrave(text: text, fontSize: 19 ),
-              ],
-            ),
             Row(
               children: [
                 Container(
@@ -46,7 +32,23 @@ class ItemCategory extends StatelessWidget {
                   ),
                 )
               ],
-            )
+            ),
+            Row(
+              children: [
+                TextPlus(text: text, fontSize: 14 ),
+                SizedBox(width: 10.0),
+                Container(
+                  height: 18,
+                  width: 18,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: color, width: 4.0),
+                      borderRadius: BorderRadius.circular(7.0)
+                  ),
+                ),
+
+
+              ],
+            ),
           ],
         ),
       ),

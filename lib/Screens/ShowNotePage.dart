@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keep_notes/Bloc/Notes/notes_bloc.dart';
 import 'package:keep_notes/Helpers/modalSelectCategory.dart';
 import 'package:keep_notes/Models/NoteModels.dart';
-import 'package:keep_notes/Widgets/SelectedColor.dart';
 import 'package:keep_notes/Widgets/TextFieldBody.dart';
 import 'package:keep_notes/Widgets/TextFieldTitle.dart';
-import 'package:keep_notes/Widgets/TextFrave.dart';
+import 'package:keep_notes/Widgets/text_plus.dart';
+
+import '../Helpers/modal_warning.dart';
 
 
 class ShowNotePage extends StatefulWidget {
@@ -22,7 +23,7 @@ class ShowNotePage extends StatefulWidget {
 
 class _ShowNotePageState extends State<ShowNotePage> {
 
-  late TextEditingController _titleController; 
+  late TextEditingController _titleController;
   late TextEditingController _noteController;
 
 
@@ -32,8 +33,8 @@ class _ShowNotePageState extends State<ShowNotePage> {
     _titleController = TextEditingController(text: widget.note.title);
     _noteController = TextEditingController(text: widget.note.body);
 
-    BlocProvider.of<NotesBloc>(context).add(SelectedColorEvent(widget.note.color!));
-    BlocProvider.of<NotesBloc>(context).add(SelectedCategoryEvent(widget.note.category!, BlocProvider.of<NotesBloc>(context).state.colorCategory ));
+    //BlocProvider.of<NotesBloc>(context).add(SelectedColorEvent(widget.note.color!));
+    BlocProvider.of<NotesBloc>(context).add(SelectedCategoryEvent(widget.note.category!, BlocProvider.of<NotesBloc>(context).state.categoryColor ));
 
 
     super.initState();
@@ -56,43 +57,45 @@ class _ShowNotePageState extends State<ShowNotePage> {
   Widget build(BuildContext context)
   {
     final noteBloc = BlocProvider.of<NotesBloc>(context);
-    
+
     return Scaffold(
       backgroundColor: Color(0xffF2F3F7),
       appBar: AppBar(
         backgroundColor: Color(0xffF2F3F7),
         elevation: 0,
-        title: TextFrave(text: widget.note.title!, fontWeight: FontWeight.w500, fontSize: 17 ),
+        //title: TextPlus(isTitle: true,text: widget.note.title!, fontWeight: FontWeight.w500, fontSize: 18 ),
+        title: TextPlus(isTitle: true,text: 'معاينة الموضوع', fontWeight: FontWeight.w500, fontSize: 18 ),
         centerTitle: true,
         leading: InkWell(
           onTap: () => Navigator.pop(context),
           child: Center(
-            child: TextFrave(text: 'Cancel', fontSize: 15, color: Color(0xff0C6CF2),)
+            child: TextPlus(text: 'إلغاء', fontSize: 15, color: Colors.blueGrey,)
           )
         ),
         actions: [
           InkWell(
             onTap: () {
+              if(_titleController.text.trim().isNotEmpty && _noteController.text.trim().isNotEmpty){
 
-              noteBloc.add( UpdateNoteEvent(
-                title: _titleController.text, 
-                body: _noteController.text, 
-                created: DateTime.now(), 
-                color: noteBloc.state.color, 
-                isComplete: false,
-                category: noteBloc.state.category,
-                index: widget.index
-              ));
+                noteBloc.add( UpdateNoteEvent(
+                    title: _titleController.text,
+                    body: _noteController.text,
+                    created: DateTime.now(),
+                    category: noteBloc.state.category,
+                    index: widget.index
+                ));
+                clearText();
+                Navigator.pop(context);
 
-              clearText();
-              
-              Navigator.pop(context);
+              }else{
+                modalWarning(context, 'يجب تحديد العنوان والموضوع');
+              }
 
             },
             child: Container(
               alignment: Alignment.center,
               width: 60,
-              child: TextFrave(text: 'Save', fontSize: 15, color: Color(0xff0C6CF2),)
+              child: TextPlus(text: 'حفظ', fontSize: 15, color: Colors.blueGrey,)
             ),
           )
         ],
@@ -104,12 +107,12 @@ class _ShowNotePageState extends State<ShowNotePage> {
             child: Column(
               children: [
                 TextTitle(controller: _titleController,),
-                SizedBox(height: 20.0),
+                SizedBox(height: 10.0),
                 TextWriteNote(controller: _noteController),
-                SizedBox(height: 20.0),
+                SizedBox(height: 10.0),
                 _Category(),
-                SizedBox(height: 30.0),
-                SelectedColors(),
+                SizedBox(height: 10.0),
+                //SelectedColors(),
               ],
             ),
           ),
@@ -126,7 +129,7 @@ class _Category extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final size = MediaQuery.of(context).size;
-    
+
     return Container(
       height: 60,
       width: size.width,
@@ -137,21 +140,17 @@ class _Category extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: TextFrave(text: 'Category'),
-          ),
           Container(
             margin: EdgeInsets.only(right: 10.0),
             alignment: Alignment.center,
             height: 40,
-            width: 170,
+            width: 180,
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0),
-              boxShadow: [
-                BoxShadow(color: Colors.grey, blurRadius: 7, spreadRadius: -5.0)
-              ]
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+                boxShadow: [
+                  BoxShadow(color: Colors.grey, blurRadius: 7, spreadRadius: -5.0)
+                ]
             ),
             child: InkWell(
               borderRadius: BorderRadius.circular(15.0),
@@ -162,18 +161,18 @@ class _Category extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     BlocBuilder<NotesBloc, NotesState>(
-                      builder: (_, state) 
-                        => Container(
-                          height: 18,
-                          width: 18,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: state.colorCategory, width: 4.0),
+                      builder: (_, state)
+                      => Container(
+                        height: 18,
+                        width: 18,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: state.categoryColor, width: 4.0),
                             borderRadius: BorderRadius.circular(7.0)
-                          ),
+                        ),
                       ),
                     ),
                     BlocBuilder<NotesBloc, NotesState>(
-                      builder: (_, state) => TextFrave(text: state.category, fontWeight: FontWeight.w600 )
+                        builder: (_, state) => TextPlus(text: state.category, fontWeight: FontWeight.w600 )
                     ),
                     Icon(Icons.expand_more)
                   ],
@@ -181,6 +180,11 @@ class _Category extends StatelessWidget {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: TextPlus(text: 'التصنيف'),
+          ),
+
         ],
       ),
     );

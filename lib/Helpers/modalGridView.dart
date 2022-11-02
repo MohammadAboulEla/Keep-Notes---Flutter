@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:keep_notes/Widgets/TextFrave.dart';
+import 'package:keep_notes/Widgets/text_plus.dart';
 
 
 void showModalGridView( BuildContext ctx ){
@@ -16,7 +16,7 @@ void showModalGridView( BuildContext ctx ){
           height: 200,
           child: Column(
             children: [
-              TextFrave(text: 'Options')
+              TextPlus(text: 'Options')
             ],
           ),
         ),

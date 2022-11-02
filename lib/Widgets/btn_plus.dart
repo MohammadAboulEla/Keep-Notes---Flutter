@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:keep_notes/Widgets/TextFrave.dart';
+import 'package:keep_notes/Widgets/text_plus.dart';
 
-class BtnFrave extends StatelessWidget
+class BtnPlus extends StatelessWidget
 {
   final String text;
   final Color color;
@@ -13,7 +13,7 @@ class BtnFrave extends StatelessWidget
   final double fontSize;
   final VoidCallback? onPressed;
 
-  const BtnFrave({
+  const BtnPlus({
     required this.text, 
     this.color  = const Color(0xff0C6CF2), 
     this.height = 50, 
@@ -36,7 +36,7 @@ class BtnFrave extends StatelessWidget
           backgroundColor: color,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(borderRadius))
         ),
-        child: TextFrave(text: text, fontSize: fontSize, color: textColor, fontWeight: fontWeight,),
+        child: TextPlus(text: text, fontSize: fontSize, color: textColor, fontWeight: fontWeight,),
         onPressed: onPressed,
       ),
     );

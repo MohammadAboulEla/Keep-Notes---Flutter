@@ -15,12 +15,16 @@ class TextWriteNote extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0)
       ),
       child: TextField(
+        textDirection: TextDirection.rtl,
         controller: controller,
         style: GoogleFonts.getFont('Inter'),
-        maxLines: 10,
+        maxLines: null,
+        minLines: 9,
+        //expands: true,
         decoration: InputDecoration(
           border: InputBorder.none,
-          hintText: 'Write a note...',
+          hintText: 'أكتب موضوع...',
+          hintTextDirection: TextDirection.rtl,
           contentPadding: EdgeInsets.all(10.0),
         ),
       ),

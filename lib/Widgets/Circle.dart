@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keep_notes/Bloc/Notes/notes_bloc.dart';
 
 class Circle extends StatelessWidget {
-  
+
   final int color;
   final VoidCallback onPressed;
 
@@ -22,8 +22,9 @@ class Circle extends StatelessWidget {
           color: Color(color)
         ),
         child: BlocBuilder<NotesBloc, NotesState>(
-          builder: (_, state) => state.color == color ? Icon(Icons.check, color: Colors.white) : Container() 
-        ) 
+          // builder: (_, state) => state.color == color ? Icon(Icons.check, color: Colors.white) : Container()
+          builder: (_, state) => 1 == color ? Icon(Icons.check, color: Colors.white) : Container()
+        )
       ),
     );
   }

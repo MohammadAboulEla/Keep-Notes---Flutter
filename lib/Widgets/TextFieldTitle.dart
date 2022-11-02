@@ -16,12 +16,16 @@ class TextTitle extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0)
       ),
       child: TextField(
+        maxLength: 20,
+        textDirection: TextDirection.rtl,
         controller: controller,
         style: GoogleFonts.getFont('Inter'),
         decoration: InputDecoration(
           border: InputBorder.none,
-          hintText: 'Title',
-          contentPadding: EdgeInsets.only(left: 10.0)
+          counterText: "",
+          hintTextDirection: TextDirection.rtl,
+          hintText: 'عنوان',
+          contentPadding: EdgeInsets.only(right: 10.0)
         ),
       ),
     );
